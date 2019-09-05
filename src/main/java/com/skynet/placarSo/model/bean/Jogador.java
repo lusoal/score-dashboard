@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -32,7 +33,7 @@ public class Jogador implements Serializable {
 	@JsonProperty("senha")
 	private String senha;
 
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "sessao_id")
 	@JsonBackReference
 	private Sessao sessao;

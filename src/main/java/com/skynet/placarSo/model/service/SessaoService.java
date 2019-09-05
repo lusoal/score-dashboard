@@ -23,7 +23,7 @@ public class SessaoService {
 	// de scanear o QR Code
 	public boolean iniciarSessao(Long partidaId, Long jogadorId) throws Exception {
 		Sessao session = new Sessao();
-		long sessaoId = 1;
+		long sessaoId = 0;
 		// Cria sessao automaticamente baseado no ID da partida
 		try {
 			Partidas partidaOptional = partidaService.encontrarPartida(partidaId);
@@ -33,9 +33,9 @@ public class SessaoService {
 				session.setStatus(true);
 				session.setScore_jogador(0);
 				List <Sessao> sessao = sessaoRepo.findAll();
-				
 				if (!sessao.isEmpty()) {
 					sessaoId = sessaoRepo.findLastId() + 1;
+					System.out.println("ID da sessao: "+sessaoId);
 					session.setId(sessaoId);
 				}
 				

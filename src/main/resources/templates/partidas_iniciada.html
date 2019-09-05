@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<title>Partida Iniciada</title>
+<link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+	rel="stylesheet" />
+<link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<script>
+	setTimeout(function() {
+		window.location.reload(1);
+	}, 5000);
+</script>
+
+</head>
+<body>
+	<h1 th:text=${partida.id}></h1>
+	<h1 th:text=${partida.status}></h1>
+	<br>
+	<br>
+	<br>
+	<br>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Sessao</th>
+				<th>Usuario</th>
+				<th>Score</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="sessao : ${partida.sessao}">
+				<td th:text="${sessao.id}"></td>
+				<td th:text="${sessao.jogador.usuario}"></td>
+				<td th:text="${sessao.score_jogador}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
+</body>
+</body>
+</html>

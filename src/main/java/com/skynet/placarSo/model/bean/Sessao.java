@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -31,13 +32,13 @@ public class Sessao implements Serializable {
 	@JsonProperty("status")
 	private boolean status;
 	
-	//TODO: Mudar Score para jogador
 	@JsonProperty("score")
 	private long score_jogador;
-
-	@OneToMany(mappedBy = "sessao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	
+	//Mudar para OneToOne
+	@OneToOne(mappedBy = "sessao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<Jogador> jogador;
+	private Jogador jogador;
 
 	@ManyToOne
 	@JsonBackReference
@@ -76,12 +77,14 @@ public class Sessao implements Serializable {
 		this.score_jogador = score_jogador;
 	}
 
-	public List<Jogador> getJogador() {
+	public Jogador getJogador() {
 		return jogador;
 	}
 
-	public void setJogador(List<Jogador> jogador) {
+	public void setJogador(Jogador jogador) {
 		this.jogador = jogador;
 	}
+
+	
 
 }

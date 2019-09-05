@@ -27,6 +27,16 @@ public class Partidas implements Serializable {
 	@OneToMany(mappedBy = "partidas", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<Sessao> sessao;
+	
+	private boolean status;
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 
 	public long getId() {
 		return id;

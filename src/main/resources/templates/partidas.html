@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<title>Partidas</title>
+<link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+	rel="stylesheet" />
+<link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+</head>
+<form method="post" th:object="${partida}" th:action="@{/partida/}">
+  <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+</br>
+</br>
+</br>
+</br>
+
+<body>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="partida : ${partida}">
+				<td th:text="${partida.id}"></td>
+				<td th:text="${partida.status}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</body>
+</html>
