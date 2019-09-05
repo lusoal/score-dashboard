@@ -10,13 +10,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.skynet.placarSo.model.bean.Partidas;
 import com.skynet.placarSo.model.service.PartidaService;
+import com.skynet.placarSo.utils.QRCodeGenerator;
 
 @Controller
 public class PartidaController {
 
 	@Autowired
 	private PartidaService partidaService;
-
+	
 	@GetMapping("/partida/")
 	public ModelAndView mostrarPartidas() {
 		ModelAndView mv = new ModelAndView("partidas");
@@ -30,6 +31,7 @@ public class PartidaController {
 	public String criarPartida(Partidas partida) {
 		try {
 			partidaService.cadastrarIniciarPartidas(partida);
+			QRCodeGenerator.generateQRCodeImage(Long.toString(partida.getId()));
 			return "redirect:/partida/iniciada/";
 
 		} catch (Exception e) {
