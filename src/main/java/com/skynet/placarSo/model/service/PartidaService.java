@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skynet.placarSo.model.bean.Jogador;
 import com.skynet.placarSo.model.bean.Partidas;
 import com.skynet.placarSo.model.repository.PartidasRepository;
 
@@ -14,6 +15,12 @@ public class PartidaService {
 
 	@Autowired
 	private PartidasRepository partidaRepo;
+
+	@Autowired
+	private SessaoService sessaoService;
+
+	@Autowired
+	private JogadorService jogadorService;
 
 	public List<Partidas> getAllPartidas() {
 		return partidaRepo.findAll();
@@ -52,6 +59,20 @@ public class PartidaService {
 			return partida.get();
 		}
 		return null;
+	}
+
+	public boolean finalizarPartida(Long partidaId) {
+		List<Jogador> jogadores = jogadorService.getJogadoresAtivos();
+		
+		for(Jogador j: jogadores) {
+			jogadorService.alterarStatusSessao(j.getId(), false);
+		}
+		
+		if (sessaoService.droparTodasSessoes()) {
+			partidaRepo.deleteById(partidaId);
+			return true;
+		}
+		return false;
 	}
 
 }

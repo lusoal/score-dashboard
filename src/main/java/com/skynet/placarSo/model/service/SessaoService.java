@@ -63,4 +63,13 @@ public class SessaoService {
 		return sessaoRepo.findById(sessaoId).orElse(null);
 	}
 	
+	public boolean droparTodasSessoes() {
+		try {
+			sessaoRepo.deleteAll();
+			return true;
+		} catch (Exception e) {
+			return false;	
+		}
+	}
+	
 }

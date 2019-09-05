@@ -50,5 +50,14 @@ public class JogadorService {
 		}
 		return false;
 	}
+	
+	public boolean alterarStatusSessao(Long jogadorId, boolean status) {
+		jogadorRepo.ajustarStatusSessao(status, jogadorId);
+		return true;
+	}
+	
+	public List<Jogador> getJogadoresAtivos(){
+		return jogadorRepo.getJogadoresAtivos();
+	}
 
 }

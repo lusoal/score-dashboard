@@ -49,6 +49,11 @@
 <br>
 <img src="/images/MyQRCode.png" alt="QRCode" height="350" width="350">
 
+<br>
+<br>
+<form method="post" th:object="${partida}" th:action="@{/partida/finalizar/}">
+  <button type="submit" class="btn btn-primary">Finalizar Partida</button>
+</form>
 
 </body>
 </body>

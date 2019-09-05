@@ -39,6 +39,17 @@ public class PartidaController {
 			return "redirect:/partida/";
 		}
 	}
+	
+	@PostMapping("/partida/finalizar/")
+	public String finalizarPartida(Partidas partida) {
+		try {
+			//TODO: Buscar parameter partida ID do frontend
+			partidaService.finalizarPartida(partida.getId());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return "redirect:/partida/";
+	}
 
 	@GetMapping("/partida/iniciada/")
 	public ModelAndView partidaIniciada() {
