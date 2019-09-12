@@ -32,23 +32,23 @@ public class SessaoService {
 				session.setPartidas(partidaOptional);
 				session.setStatus(true);
 				session.setScore_jogador(0);
-				List <Sessao> sessao = sessaoRepo.findAll();
+				List<Sessao> sessao = sessaoRepo.findAll();
 				if (!sessao.isEmpty()) {
 					sessaoId = sessaoRepo.findLastId() + 1;
-					System.out.println("ID da sessao: "+sessaoId);
+					System.out.println("ID da sessao: " + sessaoId);
 					session.setId(sessaoId);
 				}
-				
+
 				sessaoRepo.save(session);
 				boolean addSession = jogadorService.adicionarSessaoAoUsuario(sessaoId, true, jogadorId);
-				
+
 				// inicia a sessao do jogador caso o status dela seja false
 				if (addSession) {
 					return true;
 				} else {
-					System.out.println("Sessao que sera deletada " +  sessaoId);
-					 sessaoRepo.deleteById(sessaoId);
-					 throw new Exception("Usuario ja tem sessao");
+					System.out.println("Sessao que sera deletada " + sessaoId);
+					sessaoRepo.deleteById(sessaoId);
+					throw new Exception("Usuario ja tem sessao");
 				}
 			}
 			// Caso partida nao exista
@@ -58,18 +58,23 @@ public class SessaoService {
 		}
 
 	}
-	
+
 	public Sessao buscarSessao(Long sessaoId) {
 		return sessaoRepo.findById(sessaoId).orElse(null);
 	}
-	
+
 	public boolean droparTodasSessoes() {
+		List<Sessao> sessions = sessaoRepo.findAll();
 		try {
-			sessaoRepo.deleteAll();
+			for (Sessao s : sessions) {
+				System.out.println("SESSAO ID: " + s.getId());
+				sessaoRepo.deleteAllSessions(s.getId());
+			}
 			return true;
 		} catch (Exception e) {
-			return false;	
+			System.out.println(e);
+			return false;
 		}
 	}
-	
+
 }

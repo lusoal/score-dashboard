@@ -23,15 +23,9 @@ public interface JogadorRepository extends JpaRepository<Jogador, Long> {
 	@Query(value = setSessao, nativeQuery = true)
 	public void adicionarSessaoAoUsuario(Long sessaoId, boolean status, Long id);
 
-	public static final String setNovaSessao = "UPDATE tb_jogador\n" + "SET sessao_status = ?\n" + "WHERE id = ?";
-
-	@Modifying
-	@Transactional
-	@Query(value = setNovaSessao, nativeQuery = true)
-	public void ajustarStatusSessao(boolean status, Long id);
-	
 	public static final String GET_ALL_JOGADORES = "SELECT * FROM tb_jogador WHERE sessao_status = true";
+
 	@Query(value = GET_ALL_JOGADORES, nativeQuery = true)
-    public List<Jogador> getJogadoresAtivos();
+	public List<Jogador> getJogadoresAtivos();
 
 }

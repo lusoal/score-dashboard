@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.skynet.placarSo.model.bean.Partidas;
+import com.skynet.placarSo.model.bean.Temas;
 import com.skynet.placarSo.model.service.PartidaService;
+import com.skynet.placarSo.model.service.TemaService;
 import com.skynet.placarSo.utils.QRCodeGenerator;
 
 @Controller
@@ -18,18 +20,24 @@ public class PartidaController {
 	@Autowired
 	private PartidaService partidaService;
 	
+	@Autowired
+	private TemaService temaServ;
+	
 	@GetMapping("/partida/")
 	public ModelAndView mostrarPartidas() {
 		ModelAndView mv = new ModelAndView("partidas");
-		List<Partidas> partida = partidaService.getAllPartidas();
+		List<Partidas> partidas = partidaService.getAllPartidas();
+		List<Temas> temas = temaServ.getAllTemas();
+		mv.addObject("temas", temas);
+		mv.addObject("partida", partidas);
 		mv.addObject(new Partidas());
-		mv.addObject("partida", partida);
 		return mv;
 	}
 
 	@PostMapping("/partida/")
 	public String criarPartida(Partidas partida) {
 		try {
+			System.out.println("Tema: "+partida.getTema().getNome());
 			partidaService.cadastrarIniciarPartidas(partida);
 			QRCodeGenerator.generateQRCodeImage(Long.toString(partida.getId()));
 			return "redirect:/partida/iniciada/";
@@ -43,6 +51,7 @@ public class PartidaController {
 	@PostMapping("/partida/finalizar/")
 	public String finalizarPartida(Partidas partida) {
 		try {
+			//partida.setId(1);
 			//TODO: Buscar parameter partida ID do frontend
 			partidaService.finalizarPartida(partida.getId());
 		} catch (Exception e) {

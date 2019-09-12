@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.skynet.placarSo.model.bean.Sessao;
+import com.skynet.placarSo.model.service.PartidaService;
 import com.skynet.placarSo.model.service.SessaoService;
 
 @RestController
@@ -29,6 +30,9 @@ public class SessaoResource {
 	@Autowired
 	private ExceptionController exceptionController;
 
+	@Autowired
+	private PartidaService partidaServ;
+
 	@PostMapping("/sessao/")
 	public ResponseEntity<?> iniciarSessao(@RequestBody ObjectNode json, UriComponentsBuilder ucBuilder) {
 		Long partidaId;
@@ -36,36 +40,36 @@ public class SessaoResource {
 		try {
 			partidaId = json.get("partida_id").asLong();
 			jogadorId = json.get("jogador_id").asLong();
-		
+
 		} catch (Exception e) {
 			return exceptionController.errorHandling("Parametros Incorretos", HttpStatus.BAD_REQUEST);
 		}
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectNode sessaoStatus = mapper.createObjectNode();
-
 			sessaoStatus.put("status", true);
-
+			if (partidaServ.encontrarPartida(partidaId) == null) {
+				return exceptionController.errorHandling("Partida nao iniciada", HttpStatus.FORBIDDEN);
+			}
 			sessionService.iniciarSessao(partidaId, jogadorId);
 			return responseEntityController.responseController(sessaoStatus, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e);
-			return exceptionController.errorHandling(e.toString(), HttpStatus.BAD_REQUEST);
+			return exceptionController.errorHandling(""+e, HttpStatus.FORBIDDEN);
+			
 		}
 	}
-	
+
 	@GetMapping("/sessao/{id}")
 	public ResponseEntity<?> buscarSessaoPorId(@PathVariable("id") long id) {
 		Sessao sessao = sessionService.buscarSessao(id);
-		
+
 		if (sessao != null) {
 			return responseEntityController.responseController(sessao, HttpStatus.OK);
-		}else {
+		} else {
 			return exceptionController.errorHandling("Nao existe essa sessao", HttpStatus.NOT_FOUND);
 		}
-		
+
 	}
-	
-	
 
 }

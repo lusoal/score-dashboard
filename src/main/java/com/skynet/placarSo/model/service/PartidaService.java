@@ -25,12 +25,12 @@ public class PartidaService {
 	public List<Partidas> getAllPartidas() {
 		return partidaRepo.findAll();
 	}
-
+	
 	public boolean cadastrarIniciarPartidas(Partidas partidas) throws Exception {
 		try {
 			List<Partidas> listPartidas = partidaRepo.findAll();
-			// Cadastrar/iniciar partida apenas se tiver vazio
 			if (listPartidas.isEmpty()) {
+				partidas.setId(1);
 				partidas.setStatus(true);
 				partidaRepo.save(partidas);
 				return true;
@@ -62,15 +62,20 @@ public class PartidaService {
 	}
 
 	public boolean finalizarPartida(Long partidaId) {
+		System.out.println(partidaId);
 		List<Jogador> jogadores = jogadorService.getJogadoresAtivos();
-		
-		for(Jogador j: jogadores) {
-			jogadorService.alterarStatusSessao(j.getId(), false);
+
+		for (Jogador j : jogadores) {
+			j.setSessao(null);
+			j.setSessaoStatus(false);
+			jogadorService.updateJogador(j);
+			System.out.println("ATUALIZADO USUARIO: " + j.getUsuario());
 		}
 		
 		if (sessaoService.droparTodasSessoes()) {
 			partidaRepo.deleteById(partidaId);
 			return true;
+
 		}
 		return false;
 	}

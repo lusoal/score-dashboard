@@ -15,8 +15,14 @@
 	crossorigin="anonymous">
 
 </head>
-<form method="post" th:object="${partida}" th:action="@{/partida/}">
-  <button type="submit" class="btn btn-primary">Cadastrar</button>
+<form method="post" th:object="${partidas}" th:action="@{/partida/}">
+	<select th:field="*{tema}" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+		<option  th:each="t : ${temas}" 
+			th:value="${t.id}" 
+			th:text="${t.nome}">
+		</option>
+	</select>
+	<button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
 
 </br>
@@ -33,9 +39,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="partida : ${partida}">
-				<td th:text="${partida.id}"></td>
-				<td th:text="${partida.status}"></td>
+			<tr th:each="p : ${partida}">
+				<td th:text="${p.id}"></td>
+				<td th:text="${p.status}"></td>
 			</tr>
 		</tbody>
 	</table>

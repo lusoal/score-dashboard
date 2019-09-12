@@ -40,24 +40,28 @@ public class JogadorService {
 	public Jogador buscarUnicoPorId(Long id) {
 		return jogadorRepo.findById(id).orElse(null);
 	}
-	
+
 	public boolean adicionarSessaoAoUsuario(Long sessaoId, boolean status, Long jogadorId) {
 		Jogador jogador = jogadorRepo.findById(jogadorId).orElse(null);
-		//Valida se o usuario ja tem uma sessao ativa
+		// Valida se o usuario ja tem uma sessao ativa
 		if (jogador != null && jogador.isSessaoStatus() == false) {
 			jogadorRepo.adicionarSessaoAoUsuario(sessaoId, status, jogadorId);
 			return true;
 		}
 		return false;
 	}
-	
-	public boolean alterarStatusSessao(Long jogadorId, boolean status) {
-		jogadorRepo.ajustarStatusSessao(status, jogadorId);
-		return true;
+
+	public List<Jogador> getJogadoresAtivos() {
+		return jogadorRepo.getJogadoresAtivos();
 	}
 	
-	public List<Jogador> getJogadoresAtivos(){
-		return jogadorRepo.getJogadoresAtivos();
+	public Jogador updateJogador(Jogador jogador) {
+		try {
+			jogadorRepo.save(jogador);
+			return jogador;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 }
