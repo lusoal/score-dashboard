@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.skynet.placarSo.model.bean.Partidas;
 import com.skynet.placarSo.model.bean.Temas;
+import com.skynet.placarSo.model.service.HistoricoPartidaService;
 import com.skynet.placarSo.model.service.PartidaService;
 import com.skynet.placarSo.model.service.TemaService;
 import com.skynet.placarSo.utils.QRCodeGenerator;
@@ -22,6 +23,7 @@ public class PartidaController {
 	
 	@Autowired
 	private TemaService temaServ;
+	
 	
 	@GetMapping("/partida/")
 	public ModelAndView mostrarPartidas() {

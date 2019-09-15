@@ -21,6 +21,9 @@ public class PartidaService {
 
 	@Autowired
 	private JogadorService jogadorService;
+	
+	@Autowired
+	private HistoricoPartidaService historicoServ;
 
 	public List<Partidas> getAllPartidas() {
 		return partidaRepo.findAll();
@@ -66,6 +69,7 @@ public class PartidaService {
 		List<Jogador> jogadores = jogadorService.getJogadoresAtivos();
 
 		for (Jogador j : jogadores) {
+			historicoServ.salvarHistorico(j.getSessao().getScore_jogador(), j);
 			j.setSessao(null);
 			j.setSessaoStatus(false);
 			jogadorService.updateJogador(j);
