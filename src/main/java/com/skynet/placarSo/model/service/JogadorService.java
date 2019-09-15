@@ -33,8 +33,13 @@ public class JogadorService {
 		return jogador;
 	}
 
-	public boolean validarLogin(Jogador jogador) {
-		return jogadorRepo.findOneByUsuarioAndSenha(jogador.getUsuario(), jogador.getSenha()) != null;
+	public Jogador validarLogin(Jogador jogador) {
+		try {
+			return jogadorRepo.validarLogin(jogador.getUsuario(), jogador.getSenha());
+		} catch (Exception e) {
+			throw e;
+			// TODO: handle exception
+		}
 	}
 
 	public Jogador buscarUnicoPorId(Long id) {

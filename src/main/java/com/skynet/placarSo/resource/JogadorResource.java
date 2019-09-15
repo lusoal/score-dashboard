@@ -1,7 +1,5 @@
 package com.skynet.placarSo.resource;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +30,12 @@ public class JogadorResource {
 	private ExceptionController exceptionController;
 
 	@PostMapping("/login/")
-	public ResponseEntity<?> fazerLogin(HttpServletRequest request, @RequestBody Jogador jogador,
+	public ResponseEntity<?> fazerLogin(@RequestBody Jogador jogador,
 			UriComponentsBuilder ucBuilder) {
-
-		if (jogadorServ.validarLogin(jogador)) {
-			request.getSession().setAttribute("usuarioLogado", jogador);
-			return responseEntityController.responseController(jogador, HttpStatus.OK);
+			Jogador j = jogadorServ.validarLogin(jogador);
+		if (j != null) {
+			System.out.println(jogador.getId());
+			return responseEntityController.responseController(j, HttpStatus.OK);
 		} else {
 			return exceptionController.errorHandling("Erro no Login", HttpStatus.NOT_FOUND);
 		}

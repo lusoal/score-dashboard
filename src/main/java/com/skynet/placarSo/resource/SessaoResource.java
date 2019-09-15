@@ -47,16 +47,18 @@ public class SessaoResource {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectNode sessaoStatus = mapper.createObjectNode();
-			sessaoStatus.put("status", true);
+			
+			
 			if (partidaServ.encontrarPartida(partidaId) == null) {
 				return exceptionController.errorHandling("Partida nao iniciada", HttpStatus.FORBIDDEN);
 			}
-			sessionService.iniciarSessao(partidaId, jogadorId);
+			Sessao s = sessionService.iniciarSessao(partidaId, jogadorId);
+			sessaoStatus.put("sessao_id", s.getId());
 			return responseEntityController.responseController(sessaoStatus, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e);
-			return exceptionController.errorHandling(""+e, HttpStatus.FORBIDDEN);
-			
+			return exceptionController.errorHandling("" + e, HttpStatus.FORBIDDEN);
+
 		}
 	}
 
@@ -70,6 +72,16 @@ public class SessaoResource {
 			return exceptionController.errorHandling("Nao existe essa sessao", HttpStatus.NOT_FOUND);
 		}
 
+	}
+
+	@PostMapping("/sessao/pontuar/{id}")
+	public ResponseEntity<?> pontuarSessao(@PathVariable("id") long id) {
+		try {
+			Sessao s = sessionService.pontuarSessao(id);
+			return responseEntityController.responseController(s, HttpStatus.OK);
+		} catch (Exception e) {
+			return exceptionController.errorHandling("ERROR: " + e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }

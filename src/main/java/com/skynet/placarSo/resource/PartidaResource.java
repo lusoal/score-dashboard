@@ -1,11 +1,13 @@
 package com.skynet.placarSo.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,19 +27,24 @@ public class PartidaResource {
 	@Autowired
 	private ExceptionController exceptionController;
 
-	
 	@GetMapping("/partidas/")
 	public ResponseEntity<?> buscarSessaoPorId() {
 		List<Partidas> partidas = partidaService.getAllPartidas();
-		for (Partidas p: partidas) {
+		for (Partidas p : partidas) {
 			System.out.println(p.getTema().getNome());
 		}
-		if(partidas.isEmpty()) {
+		if (partidas.isEmpty()) {
 			return exceptionController.errorHandling("Nenhuma partida encontrada", HttpStatus.NOT_FOUND);
 		}
 		return responseEntityController.responseController(partidas, HttpStatus.OK);
 	}
-	
-	
+
+	@GetMapping("/partida/perguntas/{id}")
+	public ResponseEntity<?> getPartidaForUser(@PathVariable("id") long id) {
+		Partidas p = partidaService.encontrarPartida(id);
+		List<Object> minhaLista = new ArrayList<>();
+		minhaLista.add(p.getTema().getPerguntas());
+		return responseEntityController.responseController(minhaLista, HttpStatus.OK);
+	}
 
 }

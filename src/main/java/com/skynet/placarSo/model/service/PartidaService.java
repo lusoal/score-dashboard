@@ -73,11 +73,15 @@ public class PartidaService {
 		}
 		
 		if (sessaoService.droparTodasSessoes()) {
-			partidaRepo.deleteById(partidaId);
-			return true;
-
+			Partidas p = partidaRepo.findById(partidaId).orElse(null);
+			if (p != null) {
+				p.setTema(null);
+				partidaRepo.save(p);
+				partidaRepo.deletePartida(partidaId);
+				return true;
+			}
 		}
 		return false;
 	}
-
+	
 }

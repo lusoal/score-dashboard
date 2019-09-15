@@ -38,6 +38,16 @@ public class Sessao implements Serializable {
 	@JsonBackReference
 	@JoinColumn(name = "partida_id")
 	private Partidas partidas;
+	
+	private int countPerguntas;
+
+	public int getCountPerguntas() {
+		return countPerguntas;
+	}
+
+	public void setCountPerguntas(int countPerguntas) {
+		this.countPerguntas = countPerguntas;
+	}
 
 	public Partidas getPartidas() {
 		return partidas;

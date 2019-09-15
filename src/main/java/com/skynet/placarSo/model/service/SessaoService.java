@@ -21,7 +21,7 @@ public class SessaoService {
 
 	// Partida ja estara cadastrada, e sera enviada o ID da mesma pelo Mobile depois
 	// de scanear o QR Code
-	public boolean iniciarSessao(Long partidaId, Long jogadorId) throws Exception {
+	public Sessao iniciarSessao(Long partidaId, Long jogadorId) throws Exception {
 		Sessao session = new Sessao();
 		long sessaoId = 0;
 		// Cria sessao automaticamente baseado no ID da partida
@@ -44,7 +44,7 @@ public class SessaoService {
 
 				// inicia a sessao do jogador caso o status dela seja false
 				if (addSession) {
-					return true;
+					return session;
 				} else {
 					System.out.println("Sessao que sera deletada " + sessaoId);
 					sessaoRepo.deleteById(sessaoId);
@@ -52,7 +52,7 @@ public class SessaoService {
 				}
 			}
 			// Caso partida nao exista
-			return false;
+			throw new Exception("Partida inexistente");
 		} catch (Exception e) {
 			throw e;
 		}
@@ -76,5 +76,15 @@ public class SessaoService {
 			return false;
 		}
 	}
-
+	
+	public Sessao pontuarSessao(Long sessaoId) throws Exception {
+		Sessao sessao = sessaoRepo.findById(sessaoId).orElse(null);
+		if(sessao != null) {
+			sessao.setScore_jogador(sessao.getScore_jogador()+10);
+			sessaoRepo.save(sessao);
+			return sessao;
+		} else {
+			throw new Exception("Sessao nao encontrada");
+		}
+	}
 }

@@ -12,8 +12,10 @@ import com.skynet.placarSo.model.bean.Jogador;
 
 @Repository
 public interface JogadorRepository extends JpaRepository<Jogador, Long> {
-
-	public Jogador findOneByUsuarioAndSenha(String usuario, String senha);
+	
+	public static final String VALIDATE_LOGIN = "SELECT * FROM tb_jogador WHERE usuario = ? AND senha = ?";
+	@Query(value = VALIDATE_LOGIN, nativeQuery = true)
+	public Jogador validarLogin(String usuario, String senha);
 
 	public static final String setSessao = "UPDATE tb_jogador\n" + "SET sessao_id = ?, sessao_status = ?\n"
 			+ "WHERE id = ?";

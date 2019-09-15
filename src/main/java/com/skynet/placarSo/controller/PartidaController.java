@@ -51,8 +51,6 @@ public class PartidaController {
 	@PostMapping("/partida/finalizar/")
 	public String finalizarPartida(Partidas partida) {
 		try {
-			//partida.setId(1);
-			//TODO: Buscar parameter partida ID do frontend
 			partidaService.finalizarPartida(partida.getId());
 		} catch (Exception e) {
 			System.out.println(e);
