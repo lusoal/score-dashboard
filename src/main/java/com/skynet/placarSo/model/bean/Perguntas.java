@@ -10,7 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-@Entity	
+
+@Entity
 public class Perguntas implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,6 +32,8 @@ public class Perguntas implements Serializable {
 	private String alternativaC;
 
 	private String alternativaD;
+
+	private String imageUrl;
 
 	@ManyToOne
 	@JsonBackReference
@@ -91,6 +94,14 @@ public class Perguntas implements Serializable {
 
 	public void setAlternativaD(String alternativaD) {
 		this.alternativaD = alternativaD;
+	}
+
+	public String getImageUrl() {
+		return this.imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }
