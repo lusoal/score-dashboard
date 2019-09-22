@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.skynet.placarSo.model.bean.Partidas;
 import com.skynet.placarSo.model.service.PartidaService;
 
@@ -45,6 +47,21 @@ public class PartidaResource {
 		List<Object> minhaLista = new ArrayList<>();
 		minhaLista.add(p.getTema().getPerguntas());
 		return responseEntityController.responseController(minhaLista, HttpStatus.OK);
+	}
+
+	@GetMapping("/partida/iniciada/")
+	public ResponseEntity<?> getPartidaIniciada() {
+		boolean statusPartida = true;
+		try {
+			partidaService.getPartidaIniciada();
+		} catch (Exception e) {
+			System.out.println(e);
+			statusPartida = false;
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode status = mapper.createObjectNode();
+		status.put("message", statusPartida);
+		return responseEntityController.responseController(status, HttpStatus.OK);
 	}
 
 }

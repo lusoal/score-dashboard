@@ -22,7 +22,7 @@ public interface SessaoRepository extends JpaRepository<Sessao, Long> {
 	public Long findLastId();
 
 	public static final String FIND_WINNERS = "SELECT new com.skynet.placarSo.model.bean.Ganhador(j.usuario, s.score_jogador) "
-			+ "FROM Jogador j INNER JOIN j.sessao s WHERE s.partidas = :partida ORDER BY s.jogador DESC";
+			+ "FROM Jogador j INNER JOIN j.sessao s WHERE s.partidas = :partida ORDER BY score_jogador DESC";
 
 	@Query(value = FIND_WINNERS)
 	public List<Ganhador> getWinners(@Param("partida") Partidas partida);

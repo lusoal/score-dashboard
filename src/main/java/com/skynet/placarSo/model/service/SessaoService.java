@@ -1,9 +1,9 @@
 package com.skynet.placarSo.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import com.skynet.placarSo.model.bean.Ganhador;
@@ -81,8 +81,13 @@ public class SessaoService {
 
 	public List<Ganhador> getWinners(Partidas partidas) {
 		List<Ganhador> ganhadores = sessaoRepo.getWinners(partidas);
-		return ganhadores;
-
+		List<Ganhador> ganhadorFinal = new ArrayList<Ganhador>();
+		if (!ganhadores.isEmpty()) {
+			for (int count = 0; count < ganhadores.size() && count < 3; count++) {
+				ganhadorFinal.add(ganhadores.get(count));
+			}
+		}
+		return ganhadorFinal;
 	}
 
 	public Sessao pontuarSessao(Long sessaoId) throws Exception {

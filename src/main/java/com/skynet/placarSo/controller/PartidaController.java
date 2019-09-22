@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.skynet.placarSo.model.bean.Ganhador;
 import com.skynet.placarSo.model.bean.Partidas;
 import com.skynet.placarSo.model.bean.Temas;
-import com.skynet.placarSo.model.service.HistoricoPartidaService;
 import com.skynet.placarSo.model.service.PartidaService;
 import com.skynet.placarSo.model.service.SessaoService;
 import com.skynet.placarSo.model.service.TemaService;
@@ -25,11 +24,10 @@ public class PartidaController {
 
 	@Autowired
 	private SessaoService sessaoServ;
-	
+
 	@Autowired
 	private TemaService temaServ;
-	
-	
+
 	@GetMapping("/partida/")
 	public ModelAndView mostrarPartidas() {
 		ModelAndView mv = new ModelAndView("partidas");
@@ -44,7 +42,7 @@ public class PartidaController {
 	@PostMapping("/partida/")
 	public String criarPartida(Partidas partida) {
 		try {
-			System.out.println("Tema: "+partida.getTema().getNome());
+			System.out.println("Tema: " + partida.getTema().getNome());
 			partidaService.cadastrarIniciarPartidas(partida);
 			QRCodeGenerator.generateQRCodeImage(Long.toString(partida.getId()));
 			return "redirect:/partida/iniciada/";
@@ -54,7 +52,7 @@ public class PartidaController {
 			return "redirect:/partida/";
 		}
 	}
-	
+
 	@PostMapping("/partida/vencedores/")
 	public ModelAndView vencedoresPartida(Partidas partida) {
 		ModelAndView mv = new ModelAndView("vencedores");
@@ -62,7 +60,7 @@ public class PartidaController {
 		List<Ganhador> ganhadores = sessaoServ.getWinners(p);
 		mv.addObject("ganhadores", ganhadores);
 		mv.addObject("partida", partida);
-		return mv;		
+		return mv;
 	}
 
 	@PostMapping("/partida/finalizar/")

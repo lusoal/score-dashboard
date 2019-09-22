@@ -10,18 +10,10 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-	<script>
-		setTimeout(function () {
-			window.location.reload(1);
-		}, 5000);
-	</script>
-
 </head>
 
 <body>
-	<h1 th:text=${partida.id}></h1>
-	<h1 th:text=${partida.status}></h1>
-	<h1 th:text=${partida.tema.nome}></h1>
+	<h1>Vencedores Partida</h1>
 	<br>
 	<br>
 	<br>
@@ -29,28 +21,22 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Sessao</th>
-				<th>Usuario</th>
+				<th>Nome</th>
 				<th>Score</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="sessao : ${partida.sessao}">
-				<td th:text="${sessao.id}"></td>
-				<td th:text="${sessao.jogador.usuario}"></td>
-				<td th:text="${sessao.score_jogador}"></td>
+			<tr th:each="ganhador : ${ganhadores}">
+				<td th:text="${ganhador.usuario}"></td>
+				<td th:text="${ganhador.scoreJogador}"></td>
 			</tr>
 		</tbody>
 	</table>
 
 	<br>
 	<br>
-	<img src="/images/MyQRCode.png" alt="QRCode" height="350" width="350">
-
-	<br>
-	<br>
-	<form method="post" th:object="${partida}" th:action="@{/partida/vencedores/}">
-		<button type="submit" class="btn btn-primary">Finalizar</button>
+	<form method="post" th:object="${partida}" th:action="@{/partida/finalizar/}">
+		<button type="submit" class="btn btn-primary">Finalizar Partida</button>
 	</form>
 
 </body>
