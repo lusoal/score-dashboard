@@ -1,6 +1,7 @@
 package com.skynet.placarSo.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.skynet.placarSo.model.bean.Sessao;
+import com.skynet.placarSo.model.bean.Ganhador;
+import com.skynet.placarSo.model.bean.Partidas;
 import com.skynet.placarSo.model.service.PartidaService;
 import com.skynet.placarSo.model.service.SessaoService;
 
@@ -47,8 +52,7 @@ public class SessaoResource {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectNode sessaoStatus = mapper.createObjectNode();
-			
-			
+
 			if (partidaServ.encontrarPartida(partidaId) == null) {
 				return exceptionController.errorHandling("Partida nao iniciada", HttpStatus.FORBIDDEN);
 			}
@@ -82,6 +86,17 @@ public class SessaoResource {
 		} catch (Exception e) {
 			return exceptionController.errorHandling("ERROR: " + e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@GetMapping("/sessao/winners/{id}")
+	public ResponseEntity<?> getWinnersOfPartida(@PathVariable("id") long partidaId) {
+		Partidas p = partidaServ.encontrarPartida(partidaId);
+		List<Ganhador> ganhadores = sessionService.getWinners(p);
+		if (ganhadores.isEmpty()) {
+			return exceptionController.errorHandling("Nao existem ganhadoresna partida", HttpStatus.NOT_FOUND);
+		}
+
+		return responseEntityController.responseController(ganhadores, HttpStatus.OK);
 	}
 
 }

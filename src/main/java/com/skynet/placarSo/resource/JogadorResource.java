@@ -30,14 +30,33 @@ public class JogadorResource {
 	private ExceptionController exceptionController;
 
 	@PostMapping("/login/")
-	public ResponseEntity<?> fazerLogin(@RequestBody Jogador jogador,
-			UriComponentsBuilder ucBuilder) {
-			Jogador j = jogadorServ.validarLogin(jogador);
-		if (j != null) {
+	public ResponseEntity<?> fazerLogin(@RequestBody Jogador jogador, UriComponentsBuilder ucBuilder) {
+		// Cadastrar jogador ao inciar a partida
+		jogador.setSenha("randomstringme");
+		boolean cadastroStatus = jogadorServ.cadastrarJogador(jogador);
+		System.out.println("CADASTRO COMPLETADO: " + jogador.toString());
+		if (cadastroStatus) {
 			System.out.println(jogador.getId());
-			return responseEntityController.responseController(j, HttpStatus.OK);
+			return responseEntityController.responseController(jogador, HttpStatus.OK);
 		} else {
 			return exceptionController.errorHandling("Erro no Login", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PostMapping("/logout/")
+	public ResponseEntity<?> fazerLogout(@RequestBody ObjectNode json, UriComponentsBuilder ucBuilder) {
+		// Cadastrar jogador ao inciar a partida
+		Long jogadorId = json.get("jogador_id").asLong();
+		System.out.println(jogadorId);
+		boolean status = jogadorServ.removerJogador(jogadorId);
+		System.out.println("Removendo Jogador: " + jogadorId);
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jogador = mapper.createObjectNode();
+		jogador.put("message", status);
+		if (status) {
+			return responseEntityController.responseController(jogador, HttpStatus.OK);
+		} else {
+			return exceptionController.errorHandling("Erro na remocao", HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -61,12 +80,12 @@ public class JogadorResource {
 	@GetMapping(value = "/jogador/{id}")
 	public ResponseEntity<?> iniciarPartida(@PathVariable("id") long id) {
 		Jogador jogador = jogadorServ.buscarPorId(id);
-		if(jogador != null) {
+		if (jogador != null) {
 			return responseEntityController.responseController(jogador, HttpStatus.OK);
-		}else {
+		} else {
 			return exceptionController.errorHandling("Jogador Nao Existente", HttpStatus.NOT_FOUND);
 		}
-		
+
 	}
 
 }

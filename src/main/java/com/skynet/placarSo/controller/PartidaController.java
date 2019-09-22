@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.skynet.placarSo.model.bean.Ganhador;
 import com.skynet.placarSo.model.bean.Partidas;
 import com.skynet.placarSo.model.bean.Temas;
 import com.skynet.placarSo.model.service.HistoricoPartidaService;
 import com.skynet.placarSo.model.service.PartidaService;
+import com.skynet.placarSo.model.service.SessaoService;
 import com.skynet.placarSo.model.service.TemaService;
 import com.skynet.placarSo.utils.QRCodeGenerator;
 
@@ -20,6 +22,9 @@ public class PartidaController {
 
 	@Autowired
 	private PartidaService partidaService;
+
+	@Autowired
+	private SessaoService sessaoServ;
 	
 	@Autowired
 	private TemaService temaServ;
@@ -50,6 +55,16 @@ public class PartidaController {
 		}
 	}
 	
+	@PostMapping("/partida/vencedores/")
+	public ModelAndView vencedoresPartida(Partidas partida) {
+		ModelAndView mv = new ModelAndView("vencedores");
+		Partidas p = partidaService.encontrarPartida(partida.getId());
+		List<Ganhador> ganhadores = sessaoServ.getWinners(p);
+		mv.addObject("ganhadores", ganhadores);
+		mv.addObject("partida", partida);
+		return mv;		
+	}
+
 	@PostMapping("/partida/finalizar/")
 	public String finalizarPartida(Partidas partida) {
 		try {

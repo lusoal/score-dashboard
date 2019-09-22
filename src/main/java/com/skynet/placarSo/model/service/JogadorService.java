@@ -59,7 +59,7 @@ public class JogadorService {
 	public List<Jogador> getJogadoresAtivos() {
 		return jogadorRepo.getJogadoresAtivos();
 	}
-	
+
 	public Jogador updateJogador(Jogador jogador) {
 		try {
 			jogadorRepo.save(jogador);
@@ -67,6 +67,16 @@ public class JogadorService {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	public boolean removerJogador(long jogadorId) {
+		try {
+			jogadorRepo.deleteById(jogadorId);
+			return true;
+		} catch (Exception e) {
+			throw e;
+		}
+
 	}
 
 }

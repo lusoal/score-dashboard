@@ -3,8 +3,10 @@ package com.skynet.placarSo.model.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import com.skynet.placarSo.model.bean.Ganhador;
 import com.skynet.placarSo.model.bean.Partidas;
 import com.skynet.placarSo.model.bean.Sessao;
 import com.skynet.placarSo.model.repository.SessaoRepository;
@@ -76,11 +78,17 @@ public class SessaoService {
 			return false;
 		}
 	}
-	
+
+	public List<Ganhador> getWinners(Partidas partidas) {
+		List<Ganhador> ganhadores = sessaoRepo.getWinners(partidas);
+		return ganhadores;
+
+	}
+
 	public Sessao pontuarSessao(Long sessaoId) throws Exception {
 		Sessao sessao = sessaoRepo.findById(sessaoId).orElse(null);
-		if(sessao != null) {
-			sessao.setScore_jogador(sessao.getScore_jogador()+10);
+		if (sessao != null) {
+			sessao.setScore_jogador(sessao.getScore_jogador() + 10);
 			sessaoRepo.save(sessao);
 			return sessao;
 		} else {

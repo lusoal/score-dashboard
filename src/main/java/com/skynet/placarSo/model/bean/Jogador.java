@@ -33,7 +33,7 @@ public class Jogador implements Serializable {
 	@JsonProperty("usuario")
 	private String usuario;
 
-	@Column(nullable = false, length = 200)
+	@Column(nullable = true, length = 200)
 	@JsonProperty("senha")
 	private String senha;
 
@@ -56,6 +56,7 @@ public class Jogador implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
+
 
 	public Sessao getSessao() {
 		return sessao;
@@ -87,6 +88,18 @@ public class Jogador implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+
+	@Override
+	public String toString() {
+		return "{" +
+			" id='" + getId() + "'" +
+			", usuario='" + getUsuario() + "'" +
+			", senha='" + getSenha() + "'" +
+			", sessao='" + getSessao() + "'" +
+			", sessaoStatus='" + isSessaoStatus() + "'" +
+			"}";
 	}
 
 }
